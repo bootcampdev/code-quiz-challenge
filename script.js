@@ -1,7 +1,11 @@
 var btnStartStop = $("#btn-startstop");
+var btnNext = $("#btn-next");
 
 var uList = $("#ulist");
 var ansList = $("#anslist");
+
+var questNum = 1;
+var myTimer;
 
 
 
@@ -11,11 +15,26 @@ btnStartStop.on("click", function(event) {
     if (btnStartStop.html() === "Start") {
         btnStartStop.html("Stop");
         add_string_questions();
-        set_timer();
+        myTimer = set_timer();
     }
     else {
         btnStartStop.html("Start");
+        clearInterval(myTimer);
+        $("#timer-display").text("Timer");
         init_main_menu();
+    }
+})
+
+btnNext.on("click", function() {
+    if (questNum === 1) {
+        add_array_questions();
+    }
+    else if (questNum === 2) {
+        // dot notation question
+
+    }
+    else if (questNum === 3) {
+        // finished
     }
 })
 
@@ -27,13 +46,16 @@ init_main_menu();
 // initialize main menu
 function init_main_menu() {
 
+    $("#btn-next").hide();
+    $("#ansPanel").text("");
     $("h3").html("The questions will come from the following categories");
-    $("h4").html("You have 2 minutes after clicking Start");
+    $("h4").html("You have 1 minutes after clicking Start");
 
     uList.empty();
-    uList.append($("<li id='quest-string'>Is it a string or not?</li>"));
+    uList.append($("<li id='quest-string'>Stringing along...</li>"));
     uList.append($("<li id='quest-array'>Arrays forever!</li>"));
     uList.append($("<li id='quest-dotnot'>Dot not, what?</li>"));  
+    
     
     var questString = $("#quest-string");
     var questArray = $("#quest-array");
@@ -57,17 +79,41 @@ function add_string_questions() {
     btnTrue.on("click", function(){
         check_answer("t", "f");
     });
+
     var btnFalse = $("#btn-false");
     btnFalse.on("click", function(){
         check_answer("f", "f");
     });
 }
 
+function add_array_questions() {
+    
+    $("h3").html("Category is Array");
+    $("h4").html("Enter the symbols used to address an array location.");
+
+    $("#btn-next").hide();
+    $("#ans-panel").text("");
+    uList.empty();
+    uList.append($("<li class='no-bullet'><input type='text' name='my-text'/></li>"));
+
+    // uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-true'>True</button></li>"));
+    // uList.append($("<li id='quest-false' class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-false'>False</button></li>"));
+
+    // var btnTrue = $("#btn-true");
+    // btnTrue.on("click", function(){
+    //     check_answer("t", "f");
+    // });
+
+    // var btnFalse = $("#btn-false");
+    // btnFalse.on("click", function(){
+    //     check_answer("f", "f");
+    // });
+}
+
 
 
 function check_answer(user_input, correct_answer){
     var ansPanel = $("#ans-panel");
-    var ansTimer = $("#ans-timer");
 
     if (user_input === correct_answer) {
         ansPanel.text("Correct!")
@@ -75,10 +121,7 @@ function check_answer(user_input, correct_answer){
     else {
         ansPanel.text("Nope!")
     }
-}
-
-function add_array_questions() {
-    alert("array hi");
+    $("#btn-next").show();
 }
 
 function add_dotnot_questions() {
@@ -96,28 +139,30 @@ function set_timer() {
     // Update the count down every 1 second
     var x = setInterval(function() {
 
-    // Get today's date and time
-    var now = new Date().getTime();
-        
-    // Find the distance between now and the count down date
-    var distance = countDownDate - now;
-        
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-        
-    // Output the result in an element with id="demo"
-    // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-    // + minutes + "m " + seconds + "s ";
-    $("#timer-display").text(minutes + "m " + seconds + "s ")
-        
-    // If the count down is over, write some text 
-    if (distance < 0) {
-        clearInterval(x);
-        //document.getElementById("demo").innerHTML = "EXPIRED";
-        $("#timer-display").text("TIME OUT!");
-    }
+        // Get today's date and time
+        var now = new Date().getTime();
+            
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+            
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+        // Output the result in an element with id="demo"
+        // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
+        // + minutes + "m " + seconds + "s ";
+        $("#timer-display").text(minutes + "m " + seconds + "s ")
+            
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            //document.getElementById("demo").innerHTML = "EXPIRED";
+            $("#timer-display").text("TIME OUT!");
+        }
     }, 1000);
+
+    return x;
 }
