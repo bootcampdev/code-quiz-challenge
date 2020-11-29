@@ -6,6 +6,8 @@ var ansList = $("#anslist");
 
 var questNum = 1;
 var myTimer;
+var totalCorrectAns = 0;
+var totalAttemptedQues = 0;
 
 
 
@@ -14,6 +16,7 @@ btnStartStop.on("click", function(event) {
 
     if (btnStartStop.html() === "Start") {
         btnStartStop.html("Stop");
+        questNum = 1;
         add_string_questions();
         myTimer = set_timer();
     }
@@ -25,17 +28,22 @@ btnStartStop.on("click", function(event) {
     }
 })
 
+// Navigate to the next question with the Next button
+
 btnNext.on("click", function() {
-    if (questNum === 1) {        
+    if (questNum === 1) {   
+        totalAttemptedQues++;     
         add_array_questions();
-        questNum++;
+        questNum++;        
     }
     else if (questNum === 2) {
+        totalAttemptedQues++;
         add_dotnotation_questions();
-        questNum++;
+        questNum++;       
     }
     else if (questNum === 3) {
-        // finished
+        totalAttemptedQues++;
+        summary_panel();        
     }
 })
 
@@ -50,7 +58,7 @@ function init_main_menu() {
     $("#btn-next").hide();
     $("#ansPanel").text("");
     $("h3").html("The questions will come from the following categories");
-    $("h4").html("You have 1 minutes after clicking Start");
+    $("h4").html("You have 1 minute after clicking Start.  Every wrong asnwer will cost you 5 seconds.");
 
     uList.empty();
     uList.append($("<li id='quest-string'>Stringing along...</li>"));
@@ -64,7 +72,7 @@ function init_main_menu() {
 
     questString.on("click", add_string_questions);
     questArray.on("click", add_array_questions);
-    questDotnot.on("click", add_dotnot_questions);
+    questDotnot.on("click", add_dotnotation_questions);
 }
 
 function add_string_questions() {
@@ -91,7 +99,7 @@ function add_string_questions() {
 function add_array_questions() {
     
     $("h3").html("Category is Array");
-    $("h4").html("Enter the symbols used to address an array location.");
+    $("h4").html("Enter the symbols used to hold the array location.");
 
     $("#btn-next").hide();
     $("#ans-panel").text("");
@@ -145,23 +153,44 @@ function add_dotnotation_questions() {
     });
 }
 
+function summary_panel() {
+    
+    clearInterval(myTimer);
+    $("#timer-display").text("Timer");
+    btnStartStop.html("Start");
+
+    $("h3").html("Final Results");
+    $("h4").html("Your score is: " + totalCorrectAns + "/" + totalAttemptedQues + ". Please sign below and submit.  Thank you!");
+
+    $("#btn-next").hide();
+    $("#ans-panel").text("");
+
+    uList.empty();
+    uList.append($("<li class='no-bullet'><input type='text' id='my-ans'/></li>"));
+
+    uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
+    // uList.append($("<li id='quest-false' class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-false'>False</button></li>"));
+
+    var btnSubmit = $("#btn-submit");
+    btnSubmit.on("click", function(){
+        init_main_menu();
+    });
+}
 
 
 function check_answer(user_input, correct_answer){
     var ansPanel = $("#ans-panel");
 
     if (user_input === correct_answer) {
-        ansPanel.text("Correct!")
+        ansPanel.text("Correct!");
+        totalCorrectAns++;
     }
     else {
-        ansPanel.text("Nope!")
+        ansPanel.text("Nope!");
     }
     $("#btn-next").show();
 }
 
-function add_dotnot_questions() {
-    alert("dot not hi");
-}
 
 function set_timer() {
     // Thank you W3 Schools.com!
