@@ -26,12 +26,13 @@ btnStartStop.on("click", function(event) {
 })
 
 btnNext.on("click", function() {
-    if (questNum === 1) {
+    if (questNum === 1) {        
         add_array_questions();
+        questNum++;
     }
     else if (questNum === 2) {
-        // dot notation question
-
+        add_dotnotation_questions();
+        questNum++;
     }
     else if (questNum === 3) {
         // finished
@@ -73,6 +74,7 @@ function add_string_questions() {
 
     uList.empty();
     uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-true'>True</button></li>"));
+
     uList.append($("<li id='quest-false' class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-false'>False</button></li>"));
 
     var btnTrue = $("#btn-true");
@@ -93,21 +95,54 @@ function add_array_questions() {
 
     $("#btn-next").hide();
     $("#ans-panel").text("");
-    uList.empty();
-    uList.append($("<li class='no-bullet'><input type='text' name='my-text'/></li>"));
 
-    // uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-true'>True</button></li>"));
+    uList.empty();
+    uList.append($("<li class='no-bullet'><input type='text' id='my-ans'/></li>"));
+
+    uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
     // uList.append($("<li id='quest-false' class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-false'>False</button></li>"));
 
-    // var btnTrue = $("#btn-true");
-    // btnTrue.on("click", function(){
-    //     check_answer("t", "f");
-    // });
+    var btnSubmit = $("#btn-submit");
+    btnSubmit.on("click", function(){
+        check_answer($("#my-ans").val(), "[]");
+    });
+}
 
-    // var btnFalse = $("#btn-false");
-    // btnFalse.on("click", function(){
-    //     check_answer("f", "f");
-    // });
+function add_dotnotation_questions() {
+    
+    $("h3").html("Category is Dot Notation");
+    $("h4").html("Which is the correct dot notation format?");
+
+    $("#btn-next").hide();
+    $("#ans-panel").text("");
+
+    uList.empty();
+    uList.append($("<li> str1.length()  <input type='checkbox' id='my-checkbox1'/></li>"));
+
+    uList.append($("<li>str1-length  <input type='checkbox' id='my-checkbox2'/></li>"));
+
+    uList.append($("<li>str1[length] <input type='checkbox' id='my-checkbox3'/></li>"));
+
+    uList.append($("<br/>"));
+
+    uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
+
+
+    var btnSubmit = $("#btn-submit");
+    btnSubmit.on("click", function(){
+        var ans = "";
+        if ($("#my-checkbox1").is(":checked")){
+            ans = "1";
+        }
+        if ($("#my-checkbox2").is(":checked")){
+            ans = ans + "2";
+        }
+        if ($("#my-checkbox3").is(":checked")){
+            ans = ans + "3";
+        }
+
+        check_answer(ans, "1");
+    });
 }
 
 
