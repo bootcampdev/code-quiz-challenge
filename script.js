@@ -10,6 +10,7 @@ var totalCorrectAns = 0;
 var totalAttemptedQues = 0;
 
 
+// button to start and stop the quiz
 
 btnStartStop.on("click", function(event) {
     console.log($("#btn-startstop").html);
@@ -18,7 +19,7 @@ btnStartStop.on("click", function(event) {
         btnStartStop.html("Stop");
         questNum = 1;
         add_string_questions();
-        myTimer = set_timer();
+        myTimer = set_timer(1);
     }
     else {
         btnStartStop.html("Start");
@@ -47,12 +48,13 @@ btnNext.on("click", function() {
     }
 })
 
-//
-// Each category has it's own list of questions
+
+// initialize main screen
 
 init_main_menu();
 
-// initialize main menu
+// each category has it's own questions
+
 function init_main_menu() {
 
     $("#btn-next").hide();
@@ -65,15 +67,19 @@ function init_main_menu() {
     uList.append($("<li id='quest-array'>Arrays forever!</li>"));
     uList.append($("<li id='quest-dotnot'>Dot not, what?</li>"));  
     
-    
-    var questString = $("#quest-string");
-    var questArray = $("#quest-array");
-    var questDotnot = $("#quest-dotnot");
+    // Keep for future reference - this allows you to click on
+    // the string and navigate to the questions
+    // var questString = $("#quest-string");
+    // var questArray = $("#quest-array");
+    // var questDotnot = $("#quest-dotnot");
 
-    questString.on("click", add_string_questions);
-    questArray.on("click", add_array_questions);
-    questDotnot.on("click", add_dotnotation_questions);
+    // questString.on("click", add_string_questions);
+    // questArray.on("click", add_array_questions);
+    // questDotnot.on("click", add_dotnotation_questions);
 }
+
+// refresh panel and display string question
+// example of buttons
 
 function add_string_questions() {
     
@@ -96,6 +102,9 @@ function add_string_questions() {
     });
 }
 
+// refresh panel and display the array question
+// example of text input
+
 function add_array_questions() {
     
     $("h3").html("Category is Array");
@@ -115,6 +124,9 @@ function add_array_questions() {
         check_answer($("#my-ans").val(), "[]");
     });
 }
+
+// refresh panel and display the dot notation question
+// example of check box
 
 function add_dotnotation_questions() {
     
@@ -153,8 +165,11 @@ function add_dotnotation_questions() {
     });
 }
 
+// refresh panel and display the summary results
+
 function summary_panel() {
     
+    var t = $("#timer-display").text();
     clearInterval(myTimer);
     $("#timer-display").text("Timer");
     btnStartStop.html("Start");
@@ -177,6 +192,7 @@ function summary_panel() {
     });
 }
 
+// check answer for all questions, compare user input to correct answer
 
 function check_answer(user_input, correct_answer){
     var ansPanel = $("#ans-panel");
@@ -191,14 +207,21 @@ function check_answer(user_input, correct_answer){
     $("#btn-next").show();
 }
 
+// change timer values
 
-function set_timer() {
+function adjust_timer() {
+
+}
+
+// Timer
+
+function set_timer(startMin) {
     // Thank you W3 Schools.com!
     //https://www.w3schools.com/howto/howto_js_countdown.asp
 
     // Set the date we're counting down to + 1 minute
 
-    var countDownDate = new Date().getTime() + (1 * 60000);
+    var countDownDate = new Date().getTime() + (startMin * 60000);
 
     // Update the count down every 1 second
     var x = setInterval(function() {
