@@ -1,11 +1,13 @@
 var btnStartStop = $("#btn-startstop");
 var btnNext = $("#btn-next");
+var btnlinkStatus = $("#view-status");
 
 var uList = $("#ulist");
 var ansList = $("#anslist");
 
 var questNum = 1;
 var myTimer;
+var timeLeft;
 var totalCorrectAns = 0;
 var totalAttemptedQues = 0;
 
@@ -27,7 +29,7 @@ btnStartStop.on("click", function(event) {
         $("#timer-display").text("Timer");
         init_main_menu();
     }
-})
+});
 
 // Navigate to the next question with the Next button
 
@@ -46,6 +48,10 @@ btnNext.on("click", function() {
         totalAttemptedQues++;
         summary_panel();        
     }
+});
+
+btnlinkStatus.on("click", function() {
+    view_status();
 })
 
 
@@ -60,7 +66,7 @@ function init_main_menu() {
     $("#btn-next").hide();
     $("#ansPanel").text("");
     $("h3").html("The questions will come from the following categories");
-    $("h4").html("You have 1 minute after clicking Start.  Every wrong asnwer will cost you 5 seconds.");
+    $("h4").html("You have 1 minute after clicking Start.  Every wrong answer will cost you 5 seconds.");
 
     uList.empty();
     uList.append($("<li id='quest-string'>Stringing along...</li>"));
@@ -169,27 +175,46 @@ function add_dotnotation_questions() {
 
 function summary_panel() {
     
-    var t = $("#timer-display").text();
     clearInterval(myTimer);
     $("#timer-display").text("Timer");
     btnStartStop.html("Start");
 
     $("h3").html("Final Results");
-    $("h4").html("Your score is: " + totalCorrectAns + "/" + totalAttemptedQues + ". Please sign below and submit.  Thank you!");
+    $("h4").html("Your score is: " + totalCorrectAns + "/" + totalAttemptedQues + " with " + timeLeft + " seconds left. Please sign below and submit.  Thank you!");
 
     $("#btn-next").hide();
     $("#ans-panel").text("");
 
     uList.empty();
-    uList.append($("<li class='no-bullet'><input type='text' id='my-ans'/></li>"));
+    uList.append($("<li class='no-bullet'><input type='text' id='my-name'/></li>"));
 
     uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
-    // uList.append($("<li id='quest-false' class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-false'>False</button></li>"));
 
     var btnSubmit = $("#btn-submit");
     btnSubmit.on("click", function(){
+        console.log($("#my-name").val());
+        localStorage.setItem("submitedName", $("#my-name").val());
+        localStorage.setItem("numberCorrectAns", totalCorrectAns);
+        localStorage.setItem("totalAttemptedQues", totalAttemptedQues);
         init_main_menu();
     });
+}
+
+function view_status() {
+    
+    clearInterval(myTimer);
+    $("#timer-display").text("Timer");
+    btnStartStop.html("Start");
+
+    $("h3").html("Current Stats");
+    $("h4").html("");
+
+    $("#btn-next").hide();
+    $("#ans-panel").text("");
+
+    uList.empty();
+
+    uList.append($("<li>" + localStorage.getItem("submitedName") + " " + localStorage.getItem("numberCorrectAns") + " out of " + localStorage.getItem("totalAttemptedQues") + " attempted questions." + "</li>"));  
 }
 
 // check answer for all questions, compare user input to correct answer
@@ -202,16 +227,17 @@ function check_answer(user_input, correct_answer){
         totalCorrectAns++;
     }
     else {
-        ansPanel.text("Nope!");
+        ansPanel.text("Nope! -5 seconds");
+
+        // adjust timer by subtracting 5 sec from time left
+
+        timeLeft = timeLeft - 5;
+        clearInterval(myTimer);
+        myTimer = set_timer(timeLeft/60);
     }
     $("#btn-next").show();
 }
 
-// change timer values
-
-function adjust_timer() {
-
-}
 
 // Timer
 
@@ -237,6 +263,7 @@ function set_timer(startMin) {
         var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        timeLeft = seconds;
             
         // Output the result in an element with id="demo"
         // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
