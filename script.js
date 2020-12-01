@@ -54,6 +54,20 @@ btnlinkStatus.on("click", function() {
     view_status();
 })
 
+// check timer if 0 or less then stop the quiz and reset
+
+function change_listner(value) {
+    if (parseInt(value) <= 0) {
+       
+        alert("TIME OUT!");
+
+        clearInterval(myTimer);
+
+        btnStartStop.html("Start");
+        $("#timer-display").text("Timer");
+        init_main_menu();
+    }
+}
 
 // initialize main screen
 
@@ -75,6 +89,7 @@ function init_main_menu() {
     
     // Keep for future reference - this allows you to click on
     // the string and navigate to the questions
+    //----------------------------------------------------------
     // var questString = $("#quest-string");
     // var questArray = $("#quest-array");
     // var questDotnot = $("#quest-dotnot");
@@ -82,6 +97,7 @@ function init_main_menu() {
     // questString.on("click", add_string_questions);
     // questArray.on("click", add_array_questions);
     // questDotnot.on("click", add_dotnotation_questions);
+    //----------------------------------------------------------
 }
 
 // refresh panel and display string question
@@ -238,6 +254,12 @@ function check_answer(user_input, correct_answer){
     $("#btn-next").show();
 }
 
+// could not get this change event to work...
+// $("#timer-display").change(function() {
+//     if (parseInt(timeLeft) <= 0)
+//     alert("out of time!");
+// })
+
 
 // Timer
 
@@ -265,9 +287,8 @@ function set_timer(startMin) {
         var seconds = Math.floor((distance % (1000 * 60)) / 1000);
         timeLeft = seconds;
             
-        // Output the result in an element with id="demo"
-        // document.getElementById("demo").innerHTML = days + "d " + hours + "h "
-        // + minutes + "m " + seconds + "s ";
+        change_listner(seconds);
+
         $("#timer-display").text(minutes + "m " + seconds + "s ")
             
         // If the count down is over, write some text 
