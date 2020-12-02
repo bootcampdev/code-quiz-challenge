@@ -1,3 +1,5 @@
+// define global variables
+
 var btnStartStop = $("#btn-startstop");
 var btnNext = $("#btn-next");
 var btnlinkStatus = $("#view-status");
@@ -210,7 +212,7 @@ function summary_panel() {
     uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
 
     var btnSubmit = $("#btn-submit");
-    
+
     btnSubmit.on("click", function(){
         console.log($("#my-name").val());
         localStorage.setItem("submitedName", $("#my-name").val());
