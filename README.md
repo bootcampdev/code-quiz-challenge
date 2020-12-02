@@ -24,7 +24,7 @@ When you are taking a code quiz you click the Start button:
 
  - The timer starts, and the question presentation begins!
  - The user answer is checked.
- - If the user answer is wrong then 5 seconds is subtracted from the timer.  The user has less time to finish.
+ - If the user answer is wrong then 10 seconds is subtracted from the timer.  The user has less time to finish.
  - The next question is presented to the user when the user clicks Next.
  - If the timer reaches 0 before the quiz is completed, then the quiz is aborted.
  - If the quiz is completed, the user name and and score is recorded and will be presented in View Status link.

@@ -85,7 +85,7 @@ function init_main_menu() {
     $("#btn-next").hide();
     $("#ansPanel").text("");
     $("h3").html("The questions will come from the following categories");
-    $("h4").html("You have 1 minute after clicking Start.  Every wrong answer will cost you 5 seconds.");
+    $("h4").html("You have 1 minute after clicking Start.  Every wrong answer will cost you 10 seconds.");
 
     uList.empty();
     uList.append($("<li id='quest-string'>Stringing along...</li>"));
@@ -249,11 +249,11 @@ function check_answer(user_input, correct_answer){
         totalCorrectAns++;
     }
     else {
-        ansPanel.text("Nope! -5 seconds");
+        ansPanel.text("Nope! -10 seconds");
 
-        // adjust timer by subtracting 5 sec from time left
+        // adjust timer by subtracting 10 sec from time left
 
-        timeLeft = timeLeft - 5;
+        timeLeft = timeLeft - 10;
         clearInterval(myTimer);
         myTimer = set_timer(timeLeft/60);
     }
