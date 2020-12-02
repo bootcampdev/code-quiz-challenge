@@ -33,7 +33,7 @@ When you are taking a code quiz you click the Start button:
 
 ## The Quiz can be Run at 
 
-![code quiz](https://bootcampdev.github.io/code-quiz-challenge/index.html#)
+https://bootcampdev.github.io/code-quiz-challenge/index.html#
 
 
 
