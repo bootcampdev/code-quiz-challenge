@@ -77,6 +77,9 @@ init_main_menu();
 
 function init_main_menu() {
 
+    totalAttemptedQues = 0;
+    totalCorrectAns = 0;
+
     $("#btn-next").hide();
     $("#ansPanel").text("");
     $("h3").html("The questions will come from the following categories");
@@ -207,6 +210,7 @@ function summary_panel() {
     uList.append($("<li class='no-bullet'><button type='button' class='btn btn-dark'  id='btn-submit'>Submit</button></li>"));
 
     var btnSubmit = $("#btn-submit");
+    
     btnSubmit.on("click", function(){
         console.log($("#my-name").val());
         localStorage.setItem("submitedName", $("#my-name").val());
