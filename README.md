@@ -36,7 +36,6 @@ When you are taking a code quiz you click the Start button:
 https://bootcampdev.github.io/code-quiz-challenge/index.html#
 
 
-
 ## Features Included in this Application
 
  - Each question category and is defined as a "panel" (or a function)
